@@ -88,10 +88,12 @@
     </div>
     <div class="profile">
         Display Picture - Cover Picture
-        Bio
+        {{user}}
+        {{bio}}
     </div>
     <div class="settings">
-        <a href="{% url 'test' %}">Edit Profile</a>
+        <a href="{% url 'edit' %}">Edit Profile</a>
     </div>
+    <a href=" {% url 'logout' %} ">Logout</a>
 </body>
 </html>

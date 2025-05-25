@@ -10,8 +10,10 @@ from django.shortcuts import render
 from .models import Accounts, Posts, Comments, Profile
 
 
+
+
 class Profile_(forms.Form):
-    name = forms.CharField(label='Name',max_length=64)#, widget=forms.TextInput(attrs={'id':'name'})
+    name = forms.CharField(label='Name',max_length=64)
     bio = forms.CharField(label='Bio',max_length=64)
 
 class Accounts_(forms.Form):
@@ -19,7 +21,7 @@ class Accounts_(forms.Form):
     password = forms.CharField(label='Password')
 
 class Posts_(forms.Form):
-    text = forms.CharField(label='Post')
+    text = forms.CharField(label='Post', max_length=2048)
 
 class Comments_(forms.Form):
     text = forms.CharField(label='Comment')
@@ -36,16 +38,15 @@ bookmarks=['x','y','z']
 
 
 def home(request):
-    request.session['user']='No Account'
-    return render(request, 
-                  'home.html',
-                  {
-                        'user':request.session['user'],
-                        'posts':suggested,
-                        'bookmarks':bookmarks,
-                        'friends':friends, 
-                        'followings':followings
-                  }
+    if request.session['user']==None:
+        request.session['user']='No Account'
+    return render(request, 'app/ihome.html',    {
+                                                'user':request.session['user'],
+                                                'posts':suggested,
+                                                'bookmarks':bookmarks,
+                                                'friends':friends, 
+                                                'followings':followings
+                                            }
     )
 
 def log(request):
@@ -57,8 +58,8 @@ def log(request):
             user = Accounts.objects.get(username=u)
             if user.password == p:
                 request.session['user']=user.username
-                return render(request, 'home.html', {'user':request.session['user']})
-    return render(request, 'login.html',{'form':Accounts_()})
+                return render(request, 'app/ihome.html', {'user':request.session['user']})
+    return render(request, 'app/ilogin.html',{'form':Accounts_()})
 
 def sign(request):
     if request.method=='POST':
@@ -68,16 +69,30 @@ def sign(request):
             p = cred.cleaned_data['password']
             user = Accounts(username=u, password=p)
             user.save()
+            profile = Profile(user=user, name="", bio='This is a new user.')
+            profile.save()
             request.session['user']=u
-            return render(request, 'home.html', {'user':request.session['user']})
-    return render(request, 'login.html',{'form':Accounts_()})
+            return render(request, 'app/ihome.html', {'user':request.session['user']})
+    return render(request, 'app/ilogin.html',{'form':Accounts_()})
+
+
 def direct(request):
-    return render(request, 'direct.html')
+    return render(request, 'app/idirect.html')
 
 
 def edit(request):
-
-    return render(request, 'edit.html', {'form':Profile_()})
+    if request.method == 'POST':
+        form = Profile_(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            bio = form.cleaned_data['bio']
+            user = request.session['user']
+            profile = Profile.objects.get(user=user)
+            profile.name = name
+            profile.bio = bio
+            profile.save()
+            return render(request, 'app/iprofile.html', {'bio':bio, 'user':name})
+    return render(request, 'app/iedit.html', {'form':Profile_()})
 
 bio='abc'
 posts=['123','456','789']
@@ -89,12 +104,20 @@ friendship=zip(friends,score)
 action=zip(['a','c'],['b','a'],[posts[1],posts[0]])
 # [['a','b',posts[1]],['a','c',posts[0]]]
 def profile(request):
-    return render(request, 'profile.html', {'bio':bio,
-                                            'posts':posts,
-                                            'followers':followers,
-                                            'followings':followings,
-                                            'friendship':friendship,
-                                            'action':action})
+    """Renders the profile page."""
+    profile = Profile.objects.get(user=request.session['user'])
+    return render(request, 'app/iprofile.html', {'bio': profile.bio,
+                                                'posts':posts,
+                                                'followers':followers,
+                                                'followings':followings,
+                                                'friendship':friendship,
+                                                'action':action,
+                                                'user':profile.name})
+
+def logout(request):
+    """Logs out the user."""
+    request.session['user'] = "Anonymous"
+    return render(request, 'app/ihome.html', {'form':Accounts_(), 'user':request.session['user']})
 
 
 
@@ -106,11 +129,11 @@ lists=zip(p,l,v)
 def story(request):
     a = request.session['user']
     if a:
-        return render(request, 'story.html', {'lists':lists,
+        return render(request, 'app/istory.html', {'lists':lists,
                                           'c':c,
                                           'user':request.session['user']})
 
-    return render(request, 'story.html', {'lists':lists,
+    return render(request, 'app/istory.html', {'lists':lists,
                                           'c':c})
 
 """
