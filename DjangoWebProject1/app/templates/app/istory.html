@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-areas: 'sidebar post post post dash'
+                'sidebar post post post dash'
+                'sidebar post post post dash';
+        }
+
+        .list {
+            grid-area: sidebar;
+        }
+
+        .settings {
+            grid-area: set;
+        }
+
+        .post {
+            grid-area: post;
+        }
+
+        .dash {
+            grid-area: dash;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="list">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'direct' %}">Direct</a></li>
+            <li><a href="{% url 'story' %}">Story</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+        </ul>
+    </header>
+    <div class="dash">
+        Dashboard
+        <table>
+            <tr>
+                <th>Profiles</th>
+                <th>Likes</th>
+                <th>Visits</th>
+            </tr>
+            {% for i, j, k in lists %}
+            <tr>
+                <td>{{i}}</td>
+                <td>{{j}}</td>
+                <td>{{k}} - time</td>
+            </tr>
+            {% endfor %}
+
+
+        </table>
+        <table>
+            <tr>
+                <th>Comments</th>
+            </tr>
+            {% for i in c %}
+            <tr><td>{{i}}</td></tr>
+            {% endfor %}
+        </table>
+
+    </div>
+    <div class="post">
+        Story
+    </div>
+    <div class="sidebar">
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-areas: 'sidebar post post dash'
+                'sidebar post post dash'
+                'set post post dash';
+        }
+
+        #homepage {
+            display: block;
+        }
+
+        #followingspage {
+            display: block;
+        }
+
+        #grouppage {
+            display: block;
+        }
+
+        .list {
+            grid-area: sidebar;
+        }
+
+        .settings {
+            grid-area: set;
+        }
+
+        .posts {
+            grid-area: post;
+        }
+
+        .dash {
+            grid-area: dash;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+<body>
+    <div id="homepage">
+        <div class="container">
+            <header class="list">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'direct' %}">Direct</a></li>
+                    <li><a href="{% url 'story' %}">Story</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                </ul>
+            </header>
+            <div class="posts">
+                POSTS
+                <ul>
+                    {% for i in posts %}
+                    <li> {{i}} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="dash">
+                Connections
+                <dl>
+                    <dt>Followings</dt>
+                    {% for i in followings %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                <dl>
+                    <dt>Friends</dt>
+                    {% for i in friends %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                Highlightes
+                <dl>
+                    <dt>Bookmarks</dt>
+                    {% for i in bookmarks %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+            </div>
+            <div class="settings">
+                settings
+            </div>
+        </div>
+    </div>
+    <h1>{{user}}</h1>
+    <a href="{% url 'sign' %}">Signup</a>
+    <a href="{% url 'log' %}">Login</a>
+</body>
+</html>

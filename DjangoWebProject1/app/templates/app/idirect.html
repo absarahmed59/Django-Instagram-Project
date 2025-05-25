@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-areas: 'sidebar log texts texts'
+                'sidebar log texts texts'
+                'set log texts texts';
+        }
+
+        .list {
+            grid-area: sidebar;
+        }
+
+        .settings {
+            grid-area: set;
+        }
+
+        .logs {
+            grid-area: log;
+        }
+
+        .texts {
+            grid-area: texts;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="list">
+        <ul display="flex">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'direct' %}">Direct</a></li>
+            <li><a href="{% url 'story' %}">Story</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+        </ul>
+    </header>
+    <div class="logs">
+        Logs
+    </div>
+    <div class="texts">
+        Texts
+    </div>
+    <div class="settings">
+        settings
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-areas: 'sidebar post post dash'
+                'sidebar post post dash'
+                'set post post dash';
+        }
+
+        #homepage {
+            display: block;
+        }
+
+        #followingspage {
+            display: block;
+        }
+
+        #grouppage {
+            display: block;
+        }
+
+        .list {
+            grid-area: sidebar;
+        }
+
+        .settings {
+            grid-area: set;
+        }
+
+        .posts {
+            grid-area: post;
+        }
+
+        .dash {
+            grid-area: dash;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+    </style>
+    <script>
+        function demo() {
+            const s = document.querySelector('#name').innerHTML;
+            alert(s);
+            document.querySelector('#demo').innerHTML = s;
+        }
+    </script>
+</head>
+<body>
+    <h1 id="demo"></h1>
+    <form action="{% url 'test' %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" onclick="demo()">Submit</button>
+    </form>
+    <a href="{% url 'profile' %}">Profile</a>
+</body>
+</html>

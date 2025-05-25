@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-areas: 'sidebar profile profile dash'
+                'sidebar post post dash'
+                'sidebar post post dash'
+                'set post post dash';
+        }
+
+        .list {
+            grid-area: sidebar;
+        }
+
+        .settings {
+            grid-area: set;
+        }
+
+        .dash {
+            grid-area: dash;
+        }
+
+        .posts {
+            grid-area: post;
+        }
+
+        .profile {
+            grid-area: profile;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body class="container">
+    <header class="list">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'direct' %}">Direct</a></li>
+            <li><a href="{% url 'story' %}">Story</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+        </ul>
+    </header>
+    <div class="posts">
+        POSTS
+        <ul>
+            {% for i in posts %}
+            <li> {{i}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="dash">
+        Activity
+        <dl>
+            <dt>Likes</dt>
+            {% for i, j, k in action %}
+            <dd> {{ i }} -> {{ j }} >> {{ k }}</dd>
+            {% endfor %}
+        </dl>
+        Connections
+        <dl>
+            <dt>Followings</dt>
+            {% for i in followings %}
+            <dd> {{ i }} </dd>
+            {% endfor %}
+        </dl>
+        <dl>
+            <dt>Followers</dt>
+            {% for i in followers %}
+            <dd> {{ i }} </dd>
+            {% endfor %}
+        </dl>
+        <dl>
+            <dt>Friendship</dt>
+            {% for i, j in friendship %}
+            <dd> {{ i }} {{ j }}</dd>
+            {% endfor %}
+        </dl>
+    </div>
+    <div class="profile">
+        Display Picture - Cover Picture
+        Bio
+    </div>
+    <div class="settings">
+        <a href="{% url 'test' %}">Edit Profile</a>
+    </div>
+</body>
+</html>
