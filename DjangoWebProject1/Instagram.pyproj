@@ -5,6 +5,7 @@
     <Name>Instagram</Name>
     <RootNamespace>DjangoWebProject1</RootNamespace>
     <TestFramework>Pytest</TestFramework>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,10 +41,10 @@
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
     <Compile Include="manage.py" />
-    <Compile Include="DjangoWebProject1\__init__.py" />
-    <Compile Include="DjangoWebProject1\settings.py" />
-    <Compile Include="DjangoWebProject1\urls.py" />
-    <Compile Include="DjangoWebProject1\wsgi.py" />
+    <Compile Include="Instagram\__init__.py" />
+    <Compile Include="Instagram\settings.py" />
+    <Compile Include="Instagram\urls.py" />
+    <Compile Include="Instagram\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -55,7 +56,7 @@
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
-    <Folder Include="DjangoWebProject1\" />
+    <Folder Include="Instagram\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\templates\app\idirect.html" />

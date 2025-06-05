@@ -26,4 +26,7 @@ class Comments(models.Model):
     likes = models.IntegerField()
     text = models.CharField(max_length=128)
 
+class Connections(models.Model):
+    user = models.ForeignKey(Accounts, on_delete=models.CASCADE)
+
 

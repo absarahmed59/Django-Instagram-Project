@@ -40,9 +40,12 @@ bookmarks=['x','y','z']
 def home(request):
     if request.session['user']==None:
         request.session['user']='No Account'
+        return render(request, 'app/ilogin.html',{'form':Accounts_()})
+    posts = Posts.objects.all().values_list('text', flat=True)
     return render(request, 'app/ihome.html',    {
-                                                'user':request.session['user'],
+                                                'user': 'Anonymous' if request.session['user']==None else request.session['user'],
                                                 'posts':suggested,
+                                                'post':posts,
                                                 'bookmarks':bookmarks,
                                                 'friends':friends, 
                                                 'followings':followings
@@ -58,7 +61,8 @@ def log(request):
             user = Accounts.objects.get(username=u)
             if user.password == p:
                 request.session['user']=user.username
-                return render(request, 'app/ihome.html', {'user':request.session['user']})
+                posts = Posts.objects.all().values_list('text', flat=True)
+                return render(request, 'app/ihome.html', {'user':request.session['user'], 'post':posts})
     return render(request, 'app/ilogin.html',{'form':Accounts_()})
 
 def sign(request):
@@ -95,28 +99,50 @@ def edit(request):
     return render(request, 'app/iedit.html', {'form':Profile_()})
 
 bio='abc'
-posts=['123','456','789']
+#posts=['123','456','789']
 followers=['a','b','c','d']
 followings=['a','b','c','d']
 friends=['a','b','c','d']
 score=[65,84,52,16]
 friendship=zip(friends,score)
-action=zip(['a','c'],['b','a'],[posts[1],posts[0]])
+#action=zip(['a','c'],['b','a'],[posts[1],posts[0]])
 # [['a','b',posts[1]],['a','c',posts[0]]]
 def profile(request):
     """Renders the profile page."""
-    profile = Profile.objects.get(user=request.session['user'])
-    return render(request, 'app/iprofile.html', {'bio': profile.bio,
+    
+    profile_ = Profile.objects.get(user=Accounts.objects.get(username=request.session['user']))
+    posts = Posts.objects.filter(user=profile_.user).values_list('text')
+    return render(request, 'app/iprofile.html', {'bio': profile_.bio,
                                                 'posts':posts,
                                                 'followers':followers,
                                                 'followings':followings,
                                                 'friendship':friendship,
-                                                'action':action,
-                                                'user':profile.name})
+                                                #'action':action,
+                                                'user':profile_.name,
+                                                'create':Posts_()})
+
+def post(request):
+    """Creates a new post."""
+    if request.method == 'POST':
+        form = Posts_(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            user = Accounts.objects.get(username=request.session['user'])
+            post = Posts(user=user, text=text, likes=0)
+            post.save()
+            posts = Posts.objects.filter(user=user).values_list('text')
+            return render(request, 'app/iprofile.html', {'bio':bio, 
+                                                'posts':posts,
+                                                'followers':followers,
+                                                'followings':followings,
+                                                'friendship':friendship,
+                                                #'action':action,
+                                                'user':user})
+    return render(request, 'app/iprofile.html', {'create':Posts_()})
 
 def logout(request):
     """Logs out the user."""
-    request.session['user'] = "Anonymous"
+    request.session['user'] = None
     return render(request, 'app/ihome.html', {'form':Accounts_(), 'user':request.session['user']})
 
 

@@ -48,11 +48,24 @@
         }
     </style>
     <script>
-
+        document.querySelector(`#homepage`).style.display = 'block';
+        function showPage(page) {
+            document.querySelectorAll('.divs').forEach(div => {
+                div.style.display = 'none';
+            })
+            document.querySelector(`#${page}`).style.display = 'block';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('button').forEach(button => {
+                button.onclick = function () {
+                    showPage(this.dataset.page)
+                }
+            })
+        });
     </script>
 </head>
 <body>
-    <div id="homepage">
+    <div id="homepage" class="divs">
         <div class="container">
             <header class="list">
                 <ul>
@@ -97,6 +110,100 @@
             </div>
         </div>
     </div>
+    <div id="grouppage" class="divs">
+        <div class="container">
+            <header class="list">
+                <ul>
+                    <li><a href="{% url 'home' %}">Group</a></li>
+                    <li><a href="{% url 'direct' %}">Direct</a></li>
+                    <li><a href="{% url 'story' %}">Story</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                </ul>
+            </header>
+            <div class="posts">
+                POSTS
+                <ul>
+                    {% for i in posts %}
+                    <li> {{i}} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="dash">
+                Connections
+                <dl>
+                    <dt>Followings</dt>
+                    {% for i in followings %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                <dl>
+                    <dt>Friends</dt>
+                    {% for i in friends %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                Highlightes
+                <dl>
+                    <dt>Bookmarks</dt>
+                    {% for i in bookmarks %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+            </div>
+            <div class="settings">
+                settings
+            </div>
+        </div>
+    </div>
+    <div id="followingspage" class="divs">
+        <div class="container">
+            <header class="list">
+                <ul>
+                    <li><a href="{% url 'home' %}">Following</a></li>
+                    <li><a href="{% url 'direct' %}">Direct</a></li>
+                    <li><a href="{% url 'story' %}">Story</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                </ul>
+            </header>
+            <div class="posts">
+                POSTS
+                <ul>
+                    {% for i in posts %}
+                    <li> {{i}} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="dash">
+                Connections
+                <dl>
+                    <dt>Followings</dt>
+                    {% for i in followings %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                <dl>
+                    <dt>Friends</dt>
+                    {% for i in friends %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+                Highlightes
+                <dl>
+                    <dt>Bookmarks</dt>
+                    {% for i in bookmarks %}
+                    <dd> {{ i }} </dd>
+                    {% endfor %}
+                </dl>
+            </div>
+            <div class="settings">
+                settings
+            </div>
+        </div>
+    </div>
+    <button data-page="homepage">Home</button>
+    <button data-page="grouppage">Group</button>
+    <button data-page="followingspage">Followings</button>
+
     <h1>{{user}}</h1>
     <a href="{% url 'sign' %}">Signup</a>
     <a href="{% url 'log' %}">Login</a>

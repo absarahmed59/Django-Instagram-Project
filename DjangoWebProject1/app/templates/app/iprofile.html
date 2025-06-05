@@ -95,5 +95,15 @@
         <a href="{% url 'edit' %}">Edit Profile</a>
     </div>
     <a href=" {% url 'logout' %} ">Logout</a>
+    <div>
+        <form action="{% url 'post' %}" method="post">
+            {% csrf_token %}
+            {{create}}
+            <button type="submit">Create</button>
+        </form>
+    </div>
+    {% for i in posts %}
+    <li>{{i.text}} likeb by {{i.likes}} times</li>
+    {% endfor %}
 </body>
 </html>
